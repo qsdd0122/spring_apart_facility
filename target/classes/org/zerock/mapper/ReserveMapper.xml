@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="org.zerock.mapper.ReserveMapper">
+
+	<select id="getInfo" resultType="String">
+		select check_section from reserveFac where fac_name = #{fac_name} and fac_aptname = #{fac_aptname} and reserve_date = #{reserve_date}
+	</select>
+	
+	<select id="getMyReserve" resultType="org.zerock.domain.ReserveVO">
+		select distinct fac_name, fac_aptname, reserve_date, reserve_time from reserveFac where userId = #{userId}
+	</select>
+		
+	<insert id="insert">
+		insert into reserveFac (fac_name, fac_aptname, userId, check_section, reserve_date, reserve_time)
+		values (#{fac_name},#{fac_aptname},#{userId}, #{check_section}, #{reserve_date}, #{reserve_time})
+	</insert>
+	
+	<delete id="delete">
+		delete from reserveFac where fac_name = #{fac_name} and fac_aptname = #{fac_aptname} and reserve_date = #{reserve_date}
+	</delete>
+	
+	<select id="countSection" resultType="Map">
+		select check_section, count(userId) as cntnum from reserveFac
+		where fac_name = #{fac_name} and fac_aptname = #{fac_aptname} and reserve_date = #{reserve_date}
+		group by check_section
+	</select>
+
+</mapper>
